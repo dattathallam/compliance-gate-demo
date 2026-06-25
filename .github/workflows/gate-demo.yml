@@ -16,12 +16,13 @@ jobs:
         # with:
         #   api-base-url: https://<your-ngrok-id>.ngrok-free.app
 
-      - name: Go word counter (runs only if the gate passed)
-        id: go
-        uses: dattathallam/gh-action-go@v1
+      - name: Composite greeter (runs only if the gate passed)
+        id: greet
+        uses: dattathallam/gh-action-composite@v1
         with:
-          text: "hello from a gated workflow"
+          name: "gated workflow"
+          greeting: "Hello"
 
       - name: Show result
         shell: bash
-        run: echo "word-count = ${{ steps.go.outputs.word-count }}"
+        run: echo "message = ${{ steps.greet.outputs.message }}"
