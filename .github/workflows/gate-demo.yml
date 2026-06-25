@@ -1,0 +1,27 @@
+name: Compliance Gate Demo
+
+# Demonstrates the compliance gate: checkout -> gate -> third-party Go action.
+# If the gate rejects a selected version it fails, and gh-action-go never runs.
+on: [workflow_dispatch, push]
+
+jobs:
+  gated:
+    runs-on: self-hosted # your local Mac runner; adjust the label if yours is more specific
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compliance gate
+        uses: dattathallam/gh-action-compliance-gate@main
+        # with:
+        #   api-base-url: https://<your-ngrok-id>.ngrok-free.app
+
+      - name: Go word counter (runs only if the gate passed)
+        id: go
+        uses: dattathallam/gh-action-go@v1
+        with:
+          text: "hello from a gated workflow"
+
+      - name: Show result
+        shell: bash
+        run: echo "word-count = ${{ steps.go.outputs.word-count }}"
