@@ -7,6 +7,9 @@ on: [workflow_dispatch, push]
 jobs:
   gated:
     runs-on: self-hosted # your local Mac runner; adjust the label if yours is more specific
+    permissions:
+      contents: read
+      administration: read   # required to read the repo's Actions allow/block policy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
