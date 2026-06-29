@@ -26,3 +26,6 @@ jobs:
       - name: Show result
         shell: bash
         run: echo "message = ${{ steps.greet.outputs.message }}"
+
+      - name: Metrics
+        uses: lowlighter/metrics@v3
