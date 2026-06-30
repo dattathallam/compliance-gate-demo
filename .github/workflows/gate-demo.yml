@@ -1,12 +1,13 @@
 name: Compliance Gate Demo
 
-# Demonstrates the compliance gate: checkout -> gate -> third-party Go action.
-# If the gate rejects a selected version it fails, and gh-action-go never runs.
+# Demonstrates the compliance gate in same-job enforcement mode.
+# The gate scans _work/_actions, enforces approved versions on disk,
+# and fails the job before any gated step runs if a version is rejected.
 on: [workflow_dispatch, push]
 
 jobs:
   gated:
-    runs-on: self-hosted # your local Mac runner; adjust the label if yours is more specific
+    runs-on: self-hosted
     permissions:
       contents: read
     steps:
@@ -17,7 +18,8 @@ jobs:
         uses: dattathallam/gh-action-compliance-gate@main
         with:
           github-token: ${{ secrets.ADMIN_PAT }}
-          # api-base-url: https://<your-ngrok-id>.ngrok-free.app
+          api-base-url: 'https://bc8d-167-103-72-120.ngrok-free.app'
+          summary-level: DEBUG
 
       - name: Composite greeter (runs only if the gate passed)
         id: greet
@@ -30,5 +32,5 @@ jobs:
         shell: bash
         run: echo "message = ${{ steps.greet.outputs.message }}"
 
-      - name: Install yq
-        uses: mikefarah/yq@v4
+      # - name: Install yq
+      #   uses: mikefarah/yq@v4

